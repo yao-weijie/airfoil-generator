@@ -1,0 +1,6 @@
+.vs/
+.idea/
+__pycache__/
+train/
+outputs/
+
