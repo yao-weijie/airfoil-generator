@@ -1,0 +1,30 @@
+#seed: 3383525914
+case-dir: 'caseSteadyState'
+airfoil-database: 'airfoil_database'
+fixed-airfoil: True
+airfoil-name: '2032c'
+
+freestream-angle:
+  - 0
+  - 20
+freestream-length:
+  - 0
+  - 50
+
+# 流体物性参数
+rho: 1
+nu: 1e-5
+
+# 并行设置
+parallel-enable: False
+subdomains: 4
+
+# 后处理
+res: 128
+output-raw-mesh: True
+output-airfoil-boundary: True
+
+# 输出
+n-samples: 2
+output-dir: 'outputs'
+output-prefix: 'sample'
