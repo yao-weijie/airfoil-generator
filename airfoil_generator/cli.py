@@ -28,6 +28,8 @@ def main():
     makeDirs(args.output_dir)
 
     set_transfile(case_dir, args.rho, args.nu)
+    if args.parallel_enable:
+        set_decomposefile(case_dir, args)
     files = read_database(args.airfoil_database)
 
     for n in range(args.n_samples):
@@ -49,16 +51,15 @@ def main():
             fname = f'{args.airfoil_name}.dat'
         else:
             fname = random.choice(files)
-        fpath = f'{args.airfoil_database}/{fname}'
+        fpath = here / f'{args.airfoil_database}/{fname}'
         print(f"\tusing {fpath}")
-        os.chdir(case_dir)
 
-        if genMesh("../" + fpath) != 0:
+        os.chdir(case_dir)
+        if genMesh(str(fpath)) != 0:
             print("\tmesh generation failed, aborting")
             os.chdir(str(here))
             continue
 
-        set_decomposefile(case_dir, args)
         set_runfile(case_dir, args.subdomains, args.parallel_enable)
         # 运行仿真
         os.system("./Allclean > foam.log")
