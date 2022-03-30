@@ -38,13 +38,12 @@ def main():
 
         # 设置流场参数
         length = random.uniform(args.freestream_length[0], args.freestream_length[1])
-        angle = random.uniform(args.freestream_angle[0] / 180 * math.pi,
-                                  args.freestream_angle[1] / 180 * math.pi)
-        fsX = math.cos(angle) * length
-        fsY = math.sin(angle) * length
+        angle = random.uniform(args.freestream_angle[0], args.freestream_angle[1]) # 单位：度
+        fsX = math.cos(angle / 180 * math.pi) * length
+        fsY = math.sin(angle / 180 * math.pi) * length
         set_ufile(case_dir, fsX, fsY)
-        print("\tUsing len %5.3f angle %+5.3f " % (length, angle*180/math.pi))
-        print(f"\tResulting freestream vel x,y: {fsX:2f},{fsY:.2f}")
+        print(f"\tUsing len {length:.2f} angle {angle:.2f}")
+        print(f"\tResulting freestream vel x,y: {fsX:.2f},{fsY:.2f}")
 
         # 画网格
         if args.fixed_airfoil:
@@ -62,14 +61,14 @@ def main():
 
         set_runfile(case_dir, args.subdomains, args.parallel_enable)
         # 运行仿真
-        os.system("./Allclean > foam.log")
-        os.system("./Allrun >> foam.log")
+        os.system("sh ./Allclean > foam.log")
+        os.system("sh ./Allrun >> foam.log")
 
         # 后处理
         if args.output_raw_mesh:
-            os.system("postProcess -func writeCellCentres -noZero >> foam.log\n")
+            os.system("postProcess -func writeCellCentres -noZero >> foam.log")
         if args.output_airfoil_boundary:
-            os.system("postProcess -func 'components(U)' -noZero >> foam.log\n")
+            os.system("postProcess -func 'components(U)' -noZero >> foam.log")
 
         os.chdir(str(here))
 
@@ -91,7 +90,7 @@ def main():
             airfoil_data = get_airfoil_data(args)
             data_dict.update(airfoil_data)
 
-        save_path = f'{args.output_dir}/sample{n}.mat'
+        save_path = f'{args.output_dir}/{args.output_prefix}{n}.mat'
         scio.savemat(save_path, data_dict)
         print("\tdone")
         t1 = time.time()
