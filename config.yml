@@ -3,6 +3,7 @@ case-dir: 'caseSteadyState'
 airfoil-database: 'airfoil_database'
 fixed-airfoil: True
 airfoil-name: '2032c'
+airfoil-name: 'falcon'
 
 freestream-angle:
   - 0
