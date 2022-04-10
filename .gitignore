@@ -8,3 +8,8 @@ postProcessing/
 polyMesh/
 airfoil.geo
 airfoil.msh
+caseSteadyState/
+caseTransient/
+
+build/
+dist/

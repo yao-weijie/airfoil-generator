@@ -2,7 +2,6 @@
 case-dir: 'caseSteadyState'
 airfoil-database: 'airfoil_database'
 fixed-airfoil: True
-airfoil-name: '2032c'
 airfoil-name: 'falcon'
 
 freestream-angle:
@@ -17,8 +16,8 @@ rho: 1
 nu: 1e-5
 
 # 并行设置
-parallel-enable: False
-subdomains: 4
+parallel-enable: True
+subdomains: 7
 
 # 后处理
 res: 128

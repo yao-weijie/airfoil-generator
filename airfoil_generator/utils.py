@@ -27,7 +27,7 @@ def get_args(config_path: str):
     # 机翼设置
     parser.add_argument('--airfoil-database', type=str, default='airfoil_database', help='翼型数据库')
     parser.add_argument('--fixed-airfoil', type=str2bool, default=True, help='是否固定翼型')
-    parser.add_argument('--airfoil-name', type=str, default='2032c', help='固定的翼型名称')
+    parser.add_argument('--airfoil-name', type=str, default='falcon', help='固定的翼型名称')
 
     # 来流设置
     parser.add_argument('--freestream-angle', type=float, nargs='+', help='来流角度范围')

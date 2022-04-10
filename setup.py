@@ -1,6 +1,6 @@
 import os
 import pathlib
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 here = pathlib.Path(__file__).parent.resolve()
 long_description = (here / "README.md").read_text(encoding="utf-8")
@@ -26,8 +26,11 @@ setup(
     author='Yao Weijie',
     author_email='996267113@qq.com',
     python_requires='>=3.6',
+    packages=find_packages(),
     install_requires=load_requirements(),
     entry_points={
-        'console_scripts': ['airfoil_generator = airfoil_generator.cli:main',]
-    },
+        'console_scripts': [
+            'airfoil_generator = airfoil_generator.cli:main',
+        ]
+    }
 )
