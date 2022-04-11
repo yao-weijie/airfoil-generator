@@ -19,7 +19,7 @@
 2. 通过上述方式安装的OpenFOAM在`/opt/openfoam5` 目录中，官方算例在`/opt/openfoam5/tutorials`，，需要的可以拷贝到home目录进行学习
 
    ```sh
-   cp /opt/openfoam5/tutorials ~/openfoam5-tutorials
+   cp -r /opt/openfoam5/tutorials ~/openfoam5-tutorials
    ```
 
 
