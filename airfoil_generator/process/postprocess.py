@@ -69,9 +69,10 @@ def coord2img(
 def get_airfoil_data(args):
     # 机翼上测点的压强
     aerofoil_p = np.loadtxt(f'{args.case_dir}/postProcessing/airfoilBoundary/500/p_aerofoil.raw', skiprows=2, dtype=np.float32)
+    aerofoil_p = sort_points(aerofoil_p[:, [0, 1, 3]])
     airfoil_x = aerofoil_p[:, 0]
     airfoil_y = aerofoil_p[:, 1]
-    airfoil_p = aerofoil_p[:, 3]
+    airfoil_p = aerofoil_p[:, 2]
     airfoil_data = {
         'airfoil_x': airfoil_x,
         'airfoil_y': airfoil_y,
@@ -127,3 +128,40 @@ def get_raw_mesh(args):
         'cell_Uy': cell_Uy,
     }
     return raw_mesh_data
+
+
+def sort_points(points):
+    """将散乱的点按照机翼表面轮廓的顺序排列
+    输入输出都是二维array，每一行都是一个样本点
+    排序后最右侧点为起点，绕逆时针一周
+    """
+    sorted_points = [[], [], []]
+    idx = np.argsort(points[:, 0]).tolist()  # 升序
+    x = points[idx, 0]
+    y = points[idx, 1]
+    p = points[idx, 2]
+
+    for i, (_x, _y, _p) in enumerate(zip(x, y, p)):
+        if i == 0:
+            sorted_points[0].append(x[i])
+            sorted_points[1].append(y[i])
+            sorted_points[2].append(p[i])
+        elif i == 1:
+            if _y >= sorted_points[1][-1]:
+                sorted_points[0].insert(0, x[i])
+                sorted_points[1].insert(0, y[i])
+                sorted_points[2].insert(0, p[i])
+            else:
+                sorted_points[0].append(_x)
+                sorted_points[1].append(_y)
+                sorted_points[2].append(_p)
+        else:
+            if abs(_y - sorted_points[1][0]) < abs(_y - sorted_points[1][-1]):
+                sorted_points[0].insert(0, x[i])
+                sorted_points[1].insert(0, y[i])
+                sorted_points[2].insert(0, p[i])
+            else:
+                sorted_points[0].append(x[i])
+                sorted_points[1].append(y[i])
+                sorted_points[2].append(p[i])
+    return np.array(sorted_points).T
