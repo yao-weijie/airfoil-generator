@@ -8,8 +8,11 @@ postProcessing/
 polyMesh/
 airfoil.geo
 airfoil.msh
-caseSteadyState/
-caseTransient/
+case*/
 
 build/
 dist/
+*.egg-info/
+
+*.png
+*.jpg
