@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>550</width>
+    <height>580</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>550</width>
+    <height>580</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>550</width>
+    <height>580</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QPushButton" name="pushButton_sim">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>300</y>
+      <width>61</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Simulate</string>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="airfoilShapeGraphics">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>256</width>
+      <height>256</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>256</width>
+      <height>192</height>
+     </size>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="interactive">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="flowFieldGraphics">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>10</y>
+      <width>256</width>
+      <height>256</height>
+     </rect>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="flowFieldChannels">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>300</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>magnitude</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>vortex</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Ux</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Uy</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_wu">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>280</y>
+      <width>311</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>wu: uppder surface</string>
+    </property>
+    <widget class="QSlider" name="slider_wu0">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>20</y>
+       <width>211</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>-99</number>
+     </property>
+     <property name="maximum">
+      <number>99</number>
+     </property>
+     <property name="value">
+      <number>50</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="tickPosition">
+      <enum>QSlider::NoTicks</enum>
+     </property>
+    </widget>
+    <widget class="QSlider" name="slider_wu1">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>40</y>
+       <width>211</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>-99</number>
+     </property>
+     <property name="maximum">
+      <number>99</number>
+     </property>
+     <property name="value">
+      <number>50</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QSlider" name="slider_wu2">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>60</y>
+       <width>211</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>-99</number>
+     </property>
+     <property name="maximum">
+      <number>99</number>
+     </property>
+     <property name="value">
+      <number>50</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_wu0">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_wu1">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>1</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_wu2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>2</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_wu0_val">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>20</y>
+       <width>43</width>
+       <height>12</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0.5</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_wu1_val">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>40</y>
+       <width>43</width>
+       <height>12</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0.5</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_wu2_val">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>60</y>
+       <width>43</width>
+       <height>12</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0.5</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_wl">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>370</y>
+      <width>311</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>wl: lower suface</string>
+    </property>
+    <widget class="QSlider" name="slider_wl0">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>20</y>
+       <width>211</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>-99</number>
+     </property>
+     <property name="maximum">
+      <number>99</number>
+     </property>
+     <property name="value">
+      <number>-50</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QSlider" name="slider_wl1">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>40</y>
+       <width>211</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>-99</number>
+     </property>
+     <property name="maximum">
+      <number>99</number>
+     </property>
+     <property name="value">
+      <number>-50</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QSlider" name="slider_wl2">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>60</y>
+       <width>211</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>-99</number>
+     </property>
+     <property name="maximum">
+      <number>99</number>
+     </property>
+     <property name="value">
+      <number>-50</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_wl0">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_wl1">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>1</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_wl2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>2</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_wl0_val">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>20</y>
+       <width>43</width>
+       <height>12</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>-0.5</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_wl1_val">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>40</y>
+       <width>43</width>
+       <height>12</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>-0.5</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_wl2_val">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>60</y>
+       <width>43</width>
+       <height>12</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>-0.5</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="Line" name="line">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>270</y>
+      <width>16</width>
+      <height>251</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_N">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>460</y>
+      <width>311</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>N</string>
+    </property>
+    <widget class="QSlider" name="slider_N1">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>20</y>
+       <width>201</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <number>100</number>
+     </property>
+     <property name="value">
+      <number>50</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_N1">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>31</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>N1</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="slider_N2">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>40</y>
+       <width>201</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <number>100</number>
+     </property>
+     <property name="value">
+      <number>100</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_N2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>21</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>N2</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_N1_val">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>20</y>
+       <width>43</width>
+       <height>12</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0.5</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_N2_val">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>40</y>
+       <width>43</width>
+       <height>12</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>1.0</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_fs">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>340</y>
+      <width>181</width>
+      <height>181</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>freestream</string>
+    </property>
+    <widget class="QDoubleSpinBox" name="doubleSpinBox_angle">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>100</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="frame">
+      <bool>true</bool>
+     </property>
+     <property name="prefix">
+      <string>angle:  </string>
+     </property>
+     <property name="minimum">
+      <double>-30.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>30.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="doubleSpinBox_velocity">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>100</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="prefix">
+      <string>velocity:  </string>
+     </property>
+     <property name="value">
+      <double>1.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="doubleSpinBox_nu">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>110</y>
+       <width>100</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="prefix">
+      <string>nu 1e-5:  </string>
+     </property>
+     <property name="minimum">
+      <double>1.000000000000000</double>
+     </property>
+     <property name="value">
+      <double>1.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="doubleSpinBox_rho">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>80</y>
+       <width>100</width>
+       <height>25</height>
+      </rect>
+     </property>
+     <property name="prefix">
+      <string>rho:  </string>
+     </property>
+     <property name="minimum">
+      <double>0.010000000000000</double>
+     </property>
+     <property name="value">
+      <double>1.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_Re">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>150</y>
+       <width>161</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Reynolds number: </string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="label_sim_status">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>280</y>
+      <width>100</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>101</width>
+      <height>16</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>Status</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>550</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionsave"/>
+   </widget>
+   <widget class="QMenu" name="menusettings">
+    <property name="title">
+     <string>settings</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menusettings"/>
+  </widget>
+  <action name="actionsave">
+   <property name="text">
+    <string>save</string>
+   </property>
+  </action>
+  <action name="actionquit">
+   <property name="text">
+    <string>quit</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

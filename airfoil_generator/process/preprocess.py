@@ -12,12 +12,13 @@ def set_transfile(case_dir, rho, nu):
     print(f'set rho={rho}, nu={nu}')
 
 
-def set_decomposefile(case_dir, args):
+def set_decomposefile(case_dir, subdomains):
     # 设置计算域分解文件
-    decomposeParDict = ParsedParameterFile(f'{case_dir}/system/decomposeParDict')
-    decomposeParDict['numberOfSubdomains'] = args.subdomains
+    decomposeParDict = ParsedParameterFile(
+        f'{case_dir}/system/decomposeParDict')
+    decomposeParDict['numberOfSubdomains'] = subdomains
     decomposeParDict.writeFile()
-    print(f'set subdomains={args.subdomains}')
+    print(f'set subdomains={subdomains}')
 
 
 def set_runfile(case_dir, subdomains, parallel_enable):
@@ -45,6 +46,40 @@ def set_ufile(case_dir, fsX, fsY):
     ufile.writeFile()
 
 
+def set_sample_points(case_dir, xrange=(-0.5, 1.5, 128), yrange=(-1.0, 1.0, 128)):
+    """set sample dict x,y coordinates according to range and resolution.
+
+    :case_dir: case directory
+    :xrange: x range for sampling: (x_lower, x_upper, x_resolution)
+    :yrange: y range for sampling: (y_lower, y_upper, y_resolution)
+    :returns: None
+
+    """
+    xrange = (-0.5, 0.5, 96)
+    yrange = (-1.0, 1.0, 306)
+    x = np.linspace(*xrange)
+    y = np.linspace(*yrange)
+    X, Y = np.meshgrid(x, y)
+    X_ = X.reshape(-1, 1)
+    Y_ = Y.reshape(-1, 1)
+    XY = np.hstack((X_, Y_))
+
+    precesion = 6  # TODO: set precesion in string format
+
+    point_list = []
+    for i, point in enumerate(XY):
+        point_list.append(f'({point[0]:.6f} {point[1]:.6f} {0.5})')
+
+    cloud_file = ParsedParameterFile(
+        f'{case_dir}/system/points', noHeader=True)
+    cloud_file['points'] = point_list
+    cloud_file.writeFile()
+    cloud_file.closeFile()
+
+
+set_sample_points('../caseSteadyState')
+
+
 def pre_process(args):
     set_transfile(args.case_dir, args.rho, args.nu)
     if args.parallel_enable:
@@ -52,9 +87,7 @@ def pre_process(args):
     set_runfile(args, args.case_dir, args.subdomains)
 
 
-def genMesh(airfoilFile):
-    ar = np.loadtxt(airfoilFile, skiprows=1)
-
+def gen_mesh(ar):
     # removing duplicate end point
     if np.max(np.abs(ar[0] - ar[-1])) < 1e-6:
         ar = ar[:-1]

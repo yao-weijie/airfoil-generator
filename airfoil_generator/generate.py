@@ -3,11 +3,12 @@ import time
 from pathlib import Path
 import math
 import random
+import numpy as np
 import scipy.io as scio
 
 from .utils.utils import read_database, makeDirs
 from .process.preprocess import (
-    genMesh,
+    gen_mesh,
     set_transfile,
     set_ufile,
     set_decomposefile,
@@ -17,18 +18,18 @@ from .process.postprocess import (
     coord2img,
     get_airfoil_data,
     get_grid_data,
-    get_raw_mesh
+    get_raw_mesh,
 )
 
 
 def generate_from_cli(args):
-    here = Path('.').absolute()
+    here = Path(".").absolute()
     case_dir = Path(args.case_dir).absolute()
     makeDirs(args.output_dir)
 
     set_transfile(case_dir, args.rho, args.nu)
     if args.parallel_enable:
-        set_decomposefile(case_dir, args)
+        set_decomposefile(case_dir, args.subdomains)
     files = read_database(args.airfoil_database)
 
     for n in range(args.n_samples):
@@ -37,14 +38,16 @@ def generate_from_cli(args):
 
         # 设置流场参数
         length = random.uniform(args.freestream_length[0], args.freestream_length[1])
-        angle = random.uniform(args.freestream_angle[0], args.freestream_angle[1]) # 单位：度
+        angle = random.uniform(
+            args.freestream_angle[0], args.freestream_angle[1]
+        )  # 单位：度
         fsX = math.cos(angle / 180 * math.pi) * length
         fsY = math.sin(angle / 180 * math.pi) * length
         freestream = {
-                'length': length,
-                'angle': angle,
-                'fsX': fsX,
-                'fsY': fsY,
+            "length": length,
+            "angle": angle,
+            "fsX": fsX,
+            "fsY": fsY,
         }
         set_ufile(case_dir, fsX, fsY)
         print(f"\tUsing len {length:.2f} angle {angle:.2f}")
@@ -52,14 +55,18 @@ def generate_from_cli(args):
 
         # 画网格
         if args.fixed_airfoil:
-            fname = f'{args.airfoil_name}.dat'
+            fname = f"{args.airfoil_name}.dat"
         else:
             fname = random.choice(files)
-        fpath = here / f'{args.airfoil_database}/{fname}'
+        fpath = here / f"{args.airfoil_database}/{fname}"
         print(f"\tusing {fpath}")
+        try:
+            coord = np.loadtxt(str(fpath), skiprows=1)
+        except:
+            coord = np.loadtxt(str(fpath))
 
         os.chdir(case_dir)
-        if genMesh(str(fpath)) != 0:
+        if gen_mesh(coord) != 0:
             print("\tmesh generation failed, aborting")
             os.chdir(str(here))
             continue
@@ -88,14 +95,14 @@ def generate_from_cli(args):
         }
 
         if args.output_raw_mesh:
-            raw_mesh_data = get_raw_mesh(args)
+            raw_mesh_data = get_raw_mesh(case_dir)
             data_dict.update(raw_mesh_data)
         if args.output_airfoil_boundary:
-            airfoil_data = get_airfoil_data(args)
+            airfoil_data = get_airfoil_data(case_dir)
             data_dict.update(airfoil_data)
 
-        save_path = f'{args.output_dir}/{args.output_prefix}{n}.mat'
+        save_path = f"{args.output_dir}/{args.output_prefix}{n}.mat"
         scio.savemat(save_path, data_dict)
         print("\tdone")
         t1 = time.time()
-        print(f'\t{t1-t0:.2f}s')
+        print(f"\t{t1-t0:.2f}s")

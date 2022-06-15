@@ -1,5 +1,5 @@
+from PyFoam.RunDictionary.ParsedParameterFile import ParsedParameterFile
 import numpy as np
-import linecache
 
 
 def coord2img(
@@ -26,8 +26,7 @@ def coord2img(
         for x in range(res):
             xf = (x / res - 0.5) * 2 + 0.5
             yf = (y / res - 0.5) * 2
-            if abs(ar[curIndex][0] - xf) < 1e-4 and abs(ar[curIndex][1] -
-                                                        yf) < 1e-4:
+            if abs(ar[curIndex][0] - xf) < 1e-4 and abs(ar[curIndex][1] - yf) < 1e-4:
                 npOutput[3][x][y] = ar[curIndex][3]
                 curIndex += 1
                 # fill input as well
@@ -46,8 +45,7 @@ def coord2img(
         for x in range(res):
             xf = (x / res - 0.5) * 2 + 0.5
             yf = (y / res - 0.5) * 2
-            if abs(ar[curIndex][0] - xf) < 1e-4 and abs(ar[curIndex][1] -
-                                                        yf) < 1e-4:
+            if abs(ar[curIndex][0] - xf) < 1e-4 and abs(ar[curIndex][1] - yf) < 1e-4:
                 npOutput[4][x][y] = ar[curIndex][3]
                 npOutput[5][x][y] = ar[curIndex][4]
                 curIndex += 1
@@ -66,9 +64,9 @@ def coord2img(
     return data_img
 
 
-def get_airfoil_data(args):
+def get_airfoil_data(case_dir):
     # 机翼上测点的压强
-    aerofoil_p = np.loadtxt(f'{args.case_dir}/postProcessing/airfoilBoundary/500/p_aerofoil.raw', skiprows=2, dtype=np.float32)
+    aerofoil_p = np.loadtxt(f'{case_dir}/postProcessing/airfoilBoundary/500/p_aerofoil.raw', skiprows=2, dtype=np.float32)
     aerofoil_p = sort_points(aerofoil_p[:, [0, 1, 3]])
     airfoil_x = aerofoil_p[:, 0]
     airfoil_y = aerofoil_p[:, 1]
@@ -101,25 +99,33 @@ def get_grid_data(args):
     return grid_data
 
 
-def get_raw_mesh(args):
+def get_raw_mesh(case_dir):
     # 流场中网格的原始数据，网格中心坐标，对应的p,U
-    nCells = int(linecache.getline(f'{args.case_dir}/500/p', lineno=21))
+    # nCells = int(linecache.getline(f'{case_dir}/500/p', lineno=21))
 
-    cell_x = linecache.getlines(f'{args.case_dir}/500/Cx')[22:22+nCells]
-    cell_x = np.array([float(x.strip()) for x in cell_x])
+    # cell_x = linecache.getlines(f'{case_dir}/500/Cx')[22:22+nCells]
+    # cell_x = np.array([float(x.strip()) for x in cell_x])
 
-    cell_y = linecache.getlines(f'{args.case_dir}/500/Cy')[22:22+nCells]
-    cell_y = np.array([float(y.strip()) for y in cell_y])
+    # cell_y = linecache.getlines(f'{case_dir}/500/Cy')[22:22+nCells]
+    # cell_y = np.array([float(y.strip()) for y in cell_y])
 
-    cell_p = linecache.getlines(f'{args.case_dir}/500/p')[22:22+nCells]
-    cell_p = np.array([float(p.strip()) for p in cell_p])
+    # cell_p = linecache.getlines(f'{case_dir}/500/p')[22:22+nCells]
+    # cell_p = np.array([float(p.strip()) for p in cell_p])
 
-    cell_Ux = linecache.getlines(f'{args.case_dir}/500/Ux')[22:22+nCells]
-    cell_Ux = np.array([float(Ux.strip()) for Ux in cell_Ux])
+    # cell_Ux = linecache.getlines(f'{case_dir}/500/Ux')[22:22+nCells]
+    # cell_Ux = np.array([float(Ux.strip()) for Ux in cell_Ux])
 
-    cell_Uy = linecache.getlines(f'{args.case_dir}/500/Uy')[22:22+nCells]
-    cell_Uy = np.array([float(Uy.strip()) for Uy in cell_Uy])
+    # cell_Uy = linecache.getlines(f'{case_dir}/500/Uy')[22:22+nCells]
+    # cell_Uy = np.array([float(Uy.strip()) for Uy in cell_Uy])
 
+    cell_xyz = ParsedParameterFile('{case_dir}/500/C').content['internalField']
+    cell_p = ParsedParameterFile(f'{case_dir}/500/p').content['internalField']
+    cell_U = ParsedParameterFile(f'{case_dir}/500/U').content['internalField']
+
+    cell_x = cell_xyz[:, 0]
+    cell_y = cell_xyz[:, 1]
+    cell_Ux = cell_U[:, 0]
+    cell_Uy = cell_U[:, 1]
     raw_mesh_data = {
         'cell_x': cell_x,
         'cell_y': cell_y,

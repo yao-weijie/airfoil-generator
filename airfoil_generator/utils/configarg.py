@@ -11,6 +11,7 @@ def str2bool(v):
         raise configargparse.ArgumentTypeError('Unsupported value encountered.')
 
 
+# def parse_case_args(parser: configargparse.ArgumentParser):
 def get_args(parser: configargparse.ArgumentParser):
     parser._config_file_parser = configargparse.YAMLConfigFileParser()
 
@@ -46,8 +47,19 @@ def get_args(parser: configargparse.ArgumentParser):
     parser.add_argument('--output-dir', type=str, default='outputs', help='数据输出路径')
     parser.add_argument('--output-prefix', type=str, default='sample', help='输出样本前缀')
 
+    return parser
 
-    # return args
+
+# def parse_cst_args(parser: configargparse.ArgumentParser):
+def get_cst_args(parser: configargparse.ArgumentParser):
+    parser = get_args(parser)
+    parser.add_argument('--wu', type=float, nargs='+', help='upper surface')
+    parser.add_argument('--lu', type=float, nargs='+', help='lower surface')
+    parser.add_argument('--N1', type=float, help='')
+    parser.add_argument('--N2', type=float, help='')
+    parser.add_argument('--dz', type=float, default=0., help='dy between upper and lower surface at x=1')
+    parser.add_argument('--N',  type=int, default=50, help='points of cst airfoil shape')
+
     return parser
 
 
