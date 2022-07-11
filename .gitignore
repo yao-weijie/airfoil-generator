@@ -1,5 +1,6 @@
 .vs/
 .idea/
+.venv/
 __pycache__/
 train/
 outputs/
@@ -8,6 +9,8 @@ postProcessing/
 polyMesh/
 airfoil.geo
 airfoil.msh
+caseSteadyState/
+caseTransient/
 case*/
 
 build/
@@ -16,3 +19,4 @@ dist/
 
 *.png
 *.jpg
+

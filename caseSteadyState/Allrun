@@ -1,8 +1,0 @@
-cd ${0%/*} || exit
-. $WM_PROJECT_DIR/bin/tools/RunFunctions
-application=`getApplication`
-decomposePar -force >> foam.log
-mpirun -np 4 $application -parallel >> foam.log
-reconstructPar >> foam.log
-postProcess -func writeCellCentres -noZero >> foam.log
-postProcess -func 'components(U)' -noZero >> foam.log
