@@ -1,30 +1,23 @@
+import math
 import os
+import random
 import time
 from pathlib import Path
-import math
-import random
+
 import numpy as np
 import scipy.io as scio
 
-from .utils.utils import read_database, makeDirs
-from .process.preprocess import (
-    gen_mesh,
-    set_transfile,
-    set_ufile,
-    set_decomposefile,
-    set_runfile,
-)
-from .process.postprocess import (
-    coord2img,
-    get_airfoil_data,
-    get_grid_data,
-    get_raw_mesh,
-)
+from .process.postprocess import (coord2img, get_airfoil_data, get_grid_data,
+                                  get_raw_mesh)
+from .process.preprocess import (gen_mesh, set_decomposefile, set_runfile,
+                                 set_transfile, set_ufile)
+from .utils.utils import makeDirs, read_database
 
 
 def generate_from_cli(args):
     here = Path(".").absolute()
     case_dir = Path(args.case_dir).absolute()
+    print("case_dir: ", case_dir)
     makeDirs(args.output_dir)
 
     set_transfile(case_dir, args.rho, args.nu)
@@ -43,12 +36,14 @@ def generate_from_cli(args):
         )  # 单位：度
         fsX = math.cos(angle / 180 * math.pi) * length
         fsY = math.sin(angle / 180 * math.pi) * length
-        freestream = {
-            "length": length,
-            "angle": angle,
-            "fsX": fsX,
-            "fsY": fsY,
-        }
+        # freestream = {
+        #     "length": length,
+        #     "angle": angle,
+        #     "fsX": fsX,
+        #     "fsY": fsY,
+        # }
+        freestream = np.array([fsX, fsY, length, angle])
+        print("freestream: ", freestream)
         set_ufile(case_dir, fsX, fsY)
         print(f"\tUsing len {length:.2f} angle {angle:.2f}")
         print(f"\tResulting freestream vel x,y: {fsX:.2f},{fsY:.2f}")
@@ -89,20 +84,24 @@ def generate_from_cli(args):
         grid_data = get_grid_data(args)
 
         data_dict = {
-            **freestream,
-            **data_img,
-            **grid_data,
+            "freestream": freestream,
+            "data_img": data_img,
+            "grid_data": grid_data,
         }
 
         if args.output_raw_mesh:
             raw_mesh_data = get_raw_mesh(case_dir)
-            data_dict.update(raw_mesh_data)
+            data_dict.update({"raw_mesh_data": raw_mesh_data})
         if args.output_airfoil_boundary:
             airfoil_data = get_airfoil_data(case_dir)
-            data_dict.update(airfoil_data)
+            data_dict.update({"airfoil_data": airfoil_data})
 
         save_path = f"{args.output_dir}/{args.output_prefix}{n}.mat"
-        scio.savemat(save_path, data_dict)
+        scio.savemat(save_path, data_dict, do_compression=True)
+
+        # when read the data with the key 'data' after loaded
+        save_path = f"{args.output_dir}/{args.output_prefix}{n}.npz"
+        np.savez_compressed(save_path, data=data_dict, allow_pickle=True)
         print("\tdone")
         t1 = time.time()
         print(f"\t{t1-t0:.2f}s")

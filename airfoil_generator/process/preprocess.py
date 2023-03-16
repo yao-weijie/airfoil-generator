@@ -1,4 +1,5 @@
 import os
+
 import numpy as np
 from PyFoam.RunDictionary.ParsedParameterFile import ParsedParameterFile
 
@@ -75,9 +76,6 @@ def set_sample_points(case_dir, xrange=(-0.5, 1.5, 128), yrange=(-1.0, 1.0, 128)
     cloud_file['points'] = point_list
     cloud_file.writeFile()
     cloud_file.closeFile()
-
-
-set_sample_points('../caseSteadyState')
 
 
 def pre_process(args):

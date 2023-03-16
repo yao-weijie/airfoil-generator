@@ -1,6 +1,10 @@
 import os
 import pathlib
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
+
+from airfoil_generator.about import (__author__, __desp__, __email__,
+                                     __package_name__, __version__)
 
 here = pathlib.Path(__file__).parent.resolve()
 long_description = (here / "README.md").read_text(encoding="utf-8")
@@ -20,17 +24,17 @@ def load_requirements(path_dir=here, comment_char="#"):
 
 
 setup(
-    name='airfoil_generator',
-    version='0.1',
-    description='流场数据集生成器',
-    author='Yao Weijie',
-    author_email='996267113@qq.com',
-    python_requires='>=3.6',
+    name=__package_name__,
+    version=__version__,
+    description=__desp__,
+    author=__author__,
+    author_email=__email__,
+    python_requires=">=3.6",
     packages=find_packages(),
     install_requires=load_requirements(),
     entry_points={
-        'console_scripts': [
-            'airfoil_generator = airfoil_generator.cli:main',
+        "console_scripts": [
+            "airfoil_generator = airfoil_generator.cli:main",
         ]
-    }
+    },
 )

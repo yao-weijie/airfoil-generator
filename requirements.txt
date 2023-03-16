@@ -1,4 +1,6 @@
 numpy
 scipy
+matplotlib
 ConfigArgParse
 PyFoam
+pyyaml
