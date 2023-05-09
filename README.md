@@ -34,6 +34,7 @@ This project is inspired by [Deep-Flow-Prediction](http://arxiv.org/abs/1810.082
 
 It's better to generate data in a directory seperate from this project.
 
+
 ```bash
 cd
 mkdir airfoil-workspace
